@@ -4,7 +4,7 @@
   "description": "this is my first api testing project with trello app",
   "main": "config.js",
   "scripts": {
-    "clean": "rimraf ./reports",
+    "clean": "rimraf ./newman",
     "test": "node ./config.js"
   },
   "repository": {

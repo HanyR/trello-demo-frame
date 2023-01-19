@@ -4,7 +4,7 @@ const newman = require('newman'); // require newman in your project
 newman.run({
     collection: require('./src/collections/Dev/dev-tests.postman_collection.json'),
     environment: require('./src/collections/Dev/dev-env.postman_environment.json'),
-    reporters: 'cli'
+    reporters: 'junit'
 }, function (err) {
 	if (err) { throw err; }
     console.log('collection run complete!');
