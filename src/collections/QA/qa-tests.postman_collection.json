@@ -1,0 +1,1969 @@
+{
+	"info": {
+		"_postman_id": "6c0a86aa-3cc8-4c9e-a364-eed08ac3fba7",
+		"name": "Trello Dev Env",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20596190"
+	},
+	"item": [
+		{
+			"name": "Organization",
+			"item": [
+				{
+					"name": "Get a Member",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.variables.set(\"idMember\", jsonResponse.id);//"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/members/:id?{{key}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"members",
+								":id"
+							],
+							"query": [
+								{
+									"key": "{{key}}",
+									"value": null
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{idMemberEmail}}",
+									"description": "Obtener el id del miembro por su email"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create an Organization",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"orgName\",getRandomOrgName());",
+									"",
+									"//Create a random name for Board",
+									"function getRandomOrgName(){",
+									"    const OrgName = \"My New Org-\" + parseInt( Math.random()*10000)",
+									"    return OrgName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the app displays organization name correctly\", function () {",
+									"pm.expect(jsonResponse.displayName).to.eql(pm.variables.get('orgName'));",
+									"});",
+									"",
+									"pm.variables.set(\"orgId\", jsonResponse.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/organizations?displayName={{orgName}}&{{key}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"organizations"
+							],
+							"query": [
+								{
+									"key": "displayName",
+									"value": "{{orgName}}",
+									"description": "temporary variable"
+								},
+								{
+									"key": "{{key}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Member's Org",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/members/:id/organizations?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"members",
+								":id",
+								"organizations"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{idAdminEmail}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Org id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/organizations/:id?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"organizations",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orgId}}",
+									"description": "Ver informacion de la Organizacion por ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a member to WS",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/organizations/:id/members/:idMember?type=normal&key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"organizations",
+								":id",
+								"members",
+								":idMember"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "normal",
+									"description": "Valid values: admin, normal"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orgId}}",
+									"description": "The ID or name of the organization"
+								},
+								{
+									"key": "idMember",
+									"value": "{{idMember}}",
+									"description": "The ID or username of the member to update"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Board",
+			"item": [
+				{
+					"name": "Create a board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"boardName\",getRandomBoardName());",
+									"",
+									"//Create a random name for Board",
+									"function getRandomBoardName(){",
+									"    const boardName = \"My New Board-\" + parseInt( Math.random()*10000)",
+									"    return boardName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the app displays board name correctly\", function () {",
+									"pm.expect(jsonResponse.name).to.eql(pm.variables.get('boardName'));",
+									"});",
+									"",
+									"pm.test(\"Verify the board is private\", function () {",
+									"pm.expect(jsonResponse.prefs.permissionLevel).to.eql(\"private\");",
+									"});",
+									"",
+									"//pm.globals.set(\"boardId\", jsonResponse.id); // set global variable",
+									"pm.variables.set(\"boardId\", jsonResponse.id); //set local variable example",
+									"",
+									"",
+									"console.log(jsonResponse.prefs)",
+									"console.log(pm.environment.get('trelloKey'))",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/?name={{boardName}}&key={{trelloKey}}&token={{trelloToken}}&defaultLists=false&idOrganization={{orgId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "defaultLists",
+									"value": "false"
+								},
+								{
+									"key": "idOrganization",
+									"value": "{{orgId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the color is updated correctly\", function () {",
+									"pm.expect(jsonResponse.prefs.background).to.eql(\"red\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/:id?key={{trelloKey}}&token={{trelloToken}}&name={{boardName}}&prefs/background=red&idOrganization={{orgId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "prefs/background",
+									"value": "red"
+								},
+								{
+									"key": "idOrganization",
+									"value": "{{orgId}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{boardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"/*",
+									"pm.test(\"Status code is 404 after deletes\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "idOrganization",
+									"value": "{{orgId}}",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{boardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add a member to Board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/:id/members/:idMember?type=normal&key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								":id",
+								"members",
+								":idMember"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "normal",
+									"description": "Valid values: admin, normal"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{boardId}}"
+								},
+								{
+									"key": "idMember",
+									"value": "{{idMember}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "List",
+			"item": [
+				{
+					"name": "Create a  List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the name of the list is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"listName\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the list is open\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.closed).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Verify the list was created inside the board\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+									"});",
+									"",
+									"pm.variables.set(\"listId\", jsonResponse.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"listName\",getRandomListName());",
+									"",
+									"//random name",
+									"function getRandomListName(){",
+									"    const listName = \"List -\" + parseInt( Math.random()*10000)",
+									"    return listName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/lists?name={{listName}}&idBoard={{boardId}}&key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{listName}}"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{boardId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the name of the list is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"listName\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the list is open\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.closed).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Verify the list was created inside the board\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+									"});",
+									"",
+									"pm.variables.set(\"listId\", jsonResponse.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"listName\",getRandomListName());",
+									"",
+									"function getRandomListName(){",
+									"    const listName = \"List-New-\" + parseInt( Math.random()*10000)",
+									"    return listName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/lists/:id?key={{trelloKey}}&token={{trelloToken}}&name={{listName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"lists",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "name",
+									"value": "{{listName}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{listId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a LIST",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"/*",
+									"pm.test(\"Status code is 404 after deletes\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/lists/:id?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"lists",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{listId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "Create a Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the name of the card is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"cardName\"));",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify the card is open\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.closed).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Verify the card was created in the correct List\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idList).to.eql(pm.variables.get(\"listId\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the card was created in the correct Board\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the card has no votes or attachments\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.attachments).to.eql([]);",
+									"    pm.expect(jsonData.badges.votes).to.eql(0);",
+									"",
+									"});",
+									"pm.variables.set(\"CardId\", jsonResponse.id);",
+									"/*",
+									"pm.environment.unset(\"boardName\");",
+									"pm.environment.unset(\"boardId\");",
+									"pm.environment.unset(\"listName\");",
+									"pm.environment.unset(\"listId\");",
+									"pm.environment.unset(\"cardName\");",
+									"*/"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"cardName\",getRandomCardName());",
+									"",
+									"function getRandomCardName(){",
+									"    const cardName = \"Learn Postman-\" + parseInt( Math.random()*10000)",
+									"    return cardName;",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/cards?idList={{listId}}&key={{trelloKey}}&token={{trelloToken}}&name={{cardName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{listId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "name",
+									"value": "{{cardName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the card name is updated correctly\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"cardName\"));",
+									"});",
+									"/*",
+									"pm.environment.unset(\"boardName\");",
+									"pm.environment.unset(\"boardId\");",
+									"pm.environment.unset(\"listName\");",
+									"pm.environment.unset(\"listId\");",
+									"pm.environment.unset(\"cardName\");",
+									"pm.environment.unset(\"CardId\");*/"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"cardName\",getRandomCardName());",
+									"",
+									"function getRandomCardName(){",
+									"    const cardName = \"Learn Postman-New-\" + parseInt( Math.random()*10000)",
+									"    return cardName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/cards/:id?key={{trelloKey}}&token={{trelloToken}}&idList={{listId}}&name={{cardName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"cards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								},
+								{
+									"key": "idList",
+									"value": "{{listId}}"
+								},
+								{
+									"key": "name",
+									"value": "{{cardName}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{CardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"/*",
+									"pm.test(\"Status code is 404 after deletes\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});*/"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/cards/:id?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"cards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{CardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Member Actions",
+			"item": [
+				{
+					"name": "Member Create a List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" //const vs var let, mover linea 1 a linea 4 para evitar que se detengan las pruebas.",
+									"const jsonResponse = pm.response.json();",
+									"//pm.set.variables('Hannia','value'); // poner set de variables dentro de la prueba es buena practica",
+									"",
+									"pm.test(\"Status code is 200- refactor\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"",
+									"pm.test(\"Verify the name of the list is correct\", function () {",
+									" //   var jsonData = pm.response.json(); ",
+									" ",
+									"    pm.expect(jsonResponse.name).to.eql(pm.variables.get(\"MemberlistName\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the list is open\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.closed).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Verify the list was created inside the board\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+									"});",
+									"",
+									"pm.variables.set(\"listId\", jsonResponse.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"MemberlistName\",getRandomListName());",
+									"",
+									"//random name",
+									"function getRandomListName(){",
+									"    const listName = \"Member List -\" + parseInt( Math.random()*10000)",
+									"    return listName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/lists?name={{MemberlistName}}&idBoard={{boardId}}&key={{MemberKey}}&token={{MemberToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{MemberlistName}}"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{boardId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{MemberKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{MemberToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Create a Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify the name of the card is correct\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.name).to.eql(pm.variables.get(\"MemberCardName\"));",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify the card is open\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.closed).to.eql(false);",
+									"});",
+									"",
+									"pm.test(\"Verify the card was created in the correct List\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idList).to.eql(pm.variables.get(\"listId\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the card was created in the correct Board\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.idBoard).to.eql(pm.variables.get(\"boardId\"));",
+									"});",
+									"",
+									"pm.test(\"Verify the card has no votes or attachments\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.attachments).to.eql([]);",
+									"    pm.expect(jsonData.badges.votes).to.eql(0);",
+									"",
+									"});",
+									"pm.variables.set(\"MemberCardId\", jsonResponse.id);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"MemberCardName\",getRandomCardName());",
+									"",
+									"function getRandomCardName(){",
+									"    const cardName = \"Member Learn Postman-\" + parseInt( Math.random()*10000)",
+									"    return cardName;",
+									"}",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/cards?idList={{listId}}&key={{MemberKey}}&token={{MemberToken}}&name={{MemberCardName}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"cards"
+							],
+							"query": [
+								{
+									"key": "idList",
+									"value": "{{listId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{MemberKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{MemberToken}}"
+								},
+								{
+									"key": "name",
+									"value": "{{MemberCardName}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Delete Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200 on Card\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Verify Card is not present after delete\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.limits).to.eql({});",
+									"     //pm.expect(jsonData[0].name, 'Name is not available').to.be.undefined;",
+									"});",
+									"",
+									"//pm.variables.unset(\"MemberCardName\");",
+									"//pm.variables.unset(\"MemberCardId\");",
+									"//CardId"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/cards/:id?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"cards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{MemberCardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member is Deleted from Board",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/:id/members/:idMember?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								":id",
+								"members",
+								":idMember"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{boardId}}"
+								},
+								{
+									"key": "idMember",
+									"value": "{{idMember}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member is Deleted from Org",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonResponse = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/organizations/:id/members/:idMember?key={{trelloKey}}&token={{trelloToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"organizations",
+								":id",
+								"members",
+								":idMember"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{trelloToken}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{orgId}}"
+								},
+								{
+									"key": "idMember",
+									"value": "{{idMember}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "No Valid TCs",
+			"item": [
+				{
+					"name": "Create a board -Invalid Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const textResponse = pm.response.text();",
+									"",
+									"pm.test(\"Status code is 401\", function () {",
+									"pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Verify the user with invalid token isn't able to create a board\", function () {",
+									"    pm.response.to.have.body(\"invalid token\");",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"boardName\",getRandomBoardName());",
+									"",
+									"//Create a random name for Board",
+									"function getRandomBoardName(){",
+									"    const boardName = \"My New Board-\" + parseInt( Math.random()*10000)",
+									"    return boardName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/?name={{boardName}}&key={{trelloKey}}&token={{invalidToken}}&defaultLists=false",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{trelloKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{invalidToken}}"
+								},
+								{
+									"key": "defaultLists",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Update a Board - NoAllow",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const textResponse = pm.response.text();",
+									"",
+									"pm.test(\"Status code is 401\", function () {",
+									"pm.response.to.have.status(401);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify the user isn't allowed to update the Board(name|color)\", function () {",
+									"    pm.response.to.have.body(\"unauthorized permission requested\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/:id?key={{MemberKey}}&token={{MemberToken}}&name={{boardName}}&prefs/background=green",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								":id"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{MemberKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{MemberToken}}"
+								},
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "prefs/background",
+									"value": "green"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{boardId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Create a board -NoAuth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const textResponse = pm.response.text();",
+									"",
+									"pm.test(\"Status code is 401\", function () {",
+									"pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Verify the user can't access to create a board when is not a member\", function () {",
+									"pm.expect(textResponse).to.eql('unauthorized organization.');",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/boards/?name={{boardName}}&key={{MemberKey}}&token={{MemberToken}}&defaultLists=false&idOrganization={{orgId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{boardName}}"
+								},
+								{
+									"key": "key",
+									"value": "{{MemberKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{MemberToken}}"
+								},
+								{
+									"key": "defaultLists",
+									"value": "false"
+								},
+								{
+									"key": "idOrganization",
+									"value": "{{orgId}}",
+									"description": "62f95ac073c44800fdd63b51"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Member Create a List -NoAuth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const textResponse = pm.response.text();",
+									"",
+									"pm.test(\"Status code is 401\", function () {",
+									"pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Verify the user can't access to create a list when is not a member\", function () {",
+									"pm.expect(textResponse).to.eql('unauthorized permission requested');",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.variables.set(\"listName\",getRandomListName());",
+									"",
+									"//random name",
+									"function getRandomListName(){",
+									"    const listName = \"Member List -\" + parseInt( Math.random()*10000)",
+									"    return listName;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/1/lists?name={{listName}}&idBoard={{boardId}}&key={{MemberKey}}&token={{MemberToken}}&idOrganization={{orgId}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"1",
+								"lists"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{listName}}"
+								},
+								{
+									"key": "idBoard",
+									"value": "{{boardId}}"
+								},
+								{
+									"key": "key",
+									"value": "{{MemberKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{MemberToken}}"
+								},
+								{
+									"key": "idOrganization",
+									"value": "{{orgId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete a Card",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//const jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200 on Card\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify Card is not present after delete\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.limits).to.eql({});",
+							"     //pm.expect(jsonData[0].name, 'Name is not available').to.be.undefined;",
+							"});",
+							"",
+							"///pm.environment.unset(\"cardName\");",
+							"//pm.environment.unset(\"CardId\");",
+							"//CardId"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/1/cards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"1",
+						"cards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{CardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify returns null after delete a Board\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData._value).to.eql(null);",
+							"});",
+							"",
+							"//pm.environment.unset(\"boardName\");",
+							"//pm.environment.unset(\"boardId\");",
+							"//pm.environment.unset(\"listName\");",
+							"//pm.environment.unset(\"listId\");",
+							"/** */",
+							"",
+							"//CardId"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/1/boards/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"1",
+						"boards",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{boardId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an Organization",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Verify returns undefined after delete an Org\", function () {",
+							"  var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.limits).to.undefined;",
+							"    //console.log(jsonData.limits)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/1/organizations/:id?key={{trelloKey}}&token={{trelloToken}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"1",
+						"organizations",
+						":id"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "{{trelloKey}}"
+						},
+						{
+							"key": "token",
+							"value": "{{trelloToken}}"
+						}
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "{{orgId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "invalidToken",
+			"value": "cbd5de10b1e3958dfc7d129bbffd6de8ca9fe6c17237277411432f88abb4e317",
+			"type": "string"
+		},
+		{
+			"key": "idMemberEmail",
+			"value": "hanUser.23@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "idAdminEmail",
+			"value": "hany.cristi@gmail.com",
+			"type": "string"
+		}
+	]
+}

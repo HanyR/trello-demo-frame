@@ -1,0 +1,24 @@
+{
+  "name": "trello-demo-frame",
+  "version": "1.0.0",
+  "description": "this is my first api testing project with trello app",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rimraf ./newman",
+    "test": "npm run clean && npx ts-node ./src/main.js" 
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HanyR/trello-demo-repo1.git"
+  },
+  "keywords": [
+    "test",
+    "clean"
+  ],
+  "author": "hanyrp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HanyR/trello-demo-repo1/issues"
+  },
+  "homepage": "https://github.com/HanyR/trello-demo-repo1#readme"
+}
