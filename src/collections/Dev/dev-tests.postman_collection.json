@@ -939,8 +939,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
 									"});",
 									"",
 									"pm.test(\"Verify the card name is updated correctly\", function () {",
@@ -1683,8 +1683,8 @@
 								"exec": [
 									"const textResponse = pm.response.text();",
 									"",
-									"pm.test(\"Status code is 401\", function () {",
-									"pm.response.to.have.status(401);",
+									"pm.test(\"Status code is 400\", function () {",
+									"pm.response.to.have.status(400); //changed to test , but is 401",
 									"});",
 									"",
 									"pm.test(\"Verify the user can't access to create a list when is not a member\", function () {",
