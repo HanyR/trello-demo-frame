@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HanyR/trello-demo-repo1.git"
+    "url": "https://github.com/HanyR/trello-demo-repo1.git"
   },
   "keywords": [
     "test",
