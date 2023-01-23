@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm i newman #por las dudas install antes ya que es necesario para CI
+      - run:  npm install -g newman #por las dudas install antes ya que es necesario para CI
       - run: npm ci # install all exact version dependencies or devDependencies from a package-lock.json file
       - run: npm run test-qa
       #- run: npm run test-dev
@@ -28,4 +28,4 @@ jobs:
         with:
           report_paths: 'newman/*.xml'
 
-          
+
