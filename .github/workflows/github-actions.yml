@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g newman #por las dudas install antes ya que es necesario para CI
-      - run: newman run "https://api.getpostman.com/collections/20596190-6c0a86aa-3cc8-4c9e-a364-eed08ac3fba7/?apikey=PMAK-638992510779a570956c1aa8-33ede5959b660a2995034f70d2b2f91b81" --environment "https://api.getpostman.com/environments/20596190-94a64d96-17d2-4642-9492-c04929c8b182/?apikey=PMAK-638992510779a570956c1aa8-33ede5959b660a2995034f70d2b2f91b81"
+      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}"
       - run: npm run dev
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
