@@ -35,7 +35,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run:  npm i newman #por las dudas install antes ya que es necesario para CI
-      #- run: npm ci # install all exact version dependencies or devDependencies from a package-lock.json file
       - run: npm run qa
       - run: npm run dev
       - name: Publish Test Report
