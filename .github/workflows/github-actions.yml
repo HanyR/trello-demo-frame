@@ -40,3 +40,11 @@ jobs:
         if: always() #always run even if the previous step fails
         with:
           report_paths: 'newman/*.xml'
+      - name: Publish Test Results#2
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+         junit_files: "test-results/junit/**/*.xml"
+         nunit_files: "test-results/nunit/**/*.xml"
+         xunit_files: "test-results/xunit/**/*.xml"
+         trx_files: "test-results/**/*.trx"
