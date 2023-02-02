@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  example_matrix:
+  environments-setup:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
@@ -40,12 +40,10 @@ jobs:
         if: always() #always run even if the previous step fails
         with:
           report_paths: 'newman/*.xml'
-      - name: Publish Test Results#2
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
+      - name: Test Report#2
+        uses: dorny/test-reporter@v1
+        if: always()    # run this step even if previous step failed
         with:
-         junit_files: "test-results/junit/**/*.xml"
-         #nunit_files: "test-results/nunit/**/*.xml"
-         #xunit_files: "test-results/xunit/**/*.xml"
-         #trx_files: "test-results/**/*.trx"
-         github_token: ${{ env.GITHUB_TOKEN }}
+          name: JEST Tests            # Name of the check run which will be created
+          path: newman/jest-*.xml    # Path to test results
+          reporter: jest-junit        # Format of test results
