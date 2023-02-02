@@ -1,5 +1,5 @@
 name: Run Tests QA Environment
-run-name: Test Execution Dev
+run-name: Test Execution QA
 
 on: 
  push:
