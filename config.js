@@ -14,7 +14,7 @@ const myEnv = dotenv.config()
 dotenvExpand.expand(myEnv)
 
 //environment setup, QA or DEV, but same collectionid
-argv.env==='QA' ? runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment") : runNewman(process.env.RUN_ENVIRONMENT_DEV,"DEV Environment");
+argv.env==='qa' ? runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment") : runNewman(process.env.RUN_ENVIRONMENT_DEV,"DEV Environment");
 //condition ? exprIfTrue : exprIfFalse
 
 function runNewman (environment_op,string_op) {
