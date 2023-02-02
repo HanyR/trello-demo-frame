@@ -15,18 +15,12 @@ This project use newman. If you don't have newman installed, run next command:
 ## Dependencies
 
 This project use next libraries: .dotenv , .dotenv-expand, .yargs
+- .dotenv-expand 
+- .yargs
 
-- .dotenv install:
+-  install dependencies:
 ```bash
-  npm i dotenv
-```
-- .dotenv-expand install:
-```bash
-  npm i dotenv-expand
-```
-- .yargs install:
-```bash
-  npm i yargs
+  npm i
 ```
 
 
