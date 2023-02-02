@@ -14,14 +14,8 @@ const myEnv = dotenv.config()
 dotenvExpand.expand(myEnv)
 
 //environment setup, QA or DEV, but same collectionid
-if (argv.environment==1) {
-    console.log('QA ENV Collection Selected');
-     runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment");
-}else{
-    console.log('DEV ENV Collection Selected');
-    runNewman(process.env.RUN_ENVIRONMENT_DEV,"DEV Environment");
-}
-
+argv.env==='qa' ? runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment") : runNewman(process.env.RUN_ENVIRONMENT_DEV,"DEV Environment");
+//condition ? exprIfTrue : exprIfFalse
 
 function runNewman (environment_op,string_op) {
     // call newman.run to pass `options` object and wait for callback
