@@ -24,11 +24,14 @@ jobs:
         #node-version: [19.x]
 
     steps:
+      - name: create env_file
+        run:  |
+            echo "${{secrets.ENV_FILE}} > .env"
       - uses: actions/checkout@v3
       - name: Running Tests - Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+        #env:
+         # GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
         with:
           node-version: ${{ matrix.node-version }}
       - run:  npm i newman #por las dudas install antes ya que es necesario para CI
@@ -40,8 +43,8 @@ jobs:
         if: always() #always run even if the previous step fails
         with:
           report_paths: 'newman/*.xml'
-      - name: Test Report#2
-        uses: dorny/test-reporter@v1
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.6.0
         if: always()    # run this step even if previous step failed
         with:
           name: JEST Tests            # Name of the check run which will be created
