@@ -5,8 +5,8 @@
   "main": "config.js",
   "scripts": {
     "clean": "rimraf ./newman",
-    "test-qa": "node ./config.js --environment=1",
-    "test-dev":"node ./config.js"
+    "qa": "node ./config.js --env=QA",
+    "dev":"node ./config.js"
   },
   "repository": {
     "type": "git",
