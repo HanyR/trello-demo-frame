@@ -50,3 +50,4 @@ jobs:
           name: JEST Tests            # Name of the check run which will be created
           path: newman/jest-*.xml    # Path to test results
           reporter: jest-junit        # Format of test results
+          
