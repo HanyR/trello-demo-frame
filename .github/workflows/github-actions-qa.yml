@@ -40,4 +40,4 @@ jobs:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
-         reporters: '["emojitrain"]'
+         reporters: 'newman/test.xml'
