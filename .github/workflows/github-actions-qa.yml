@@ -49,13 +49,12 @@ jobs:
       
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
-        name: Run Tests2
         with:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
-         reporters: '["junit"]'
-         reporter: '[ { "junit" : { "export" : "./xmlResults.xml" }} ]'
+         reporters: '["htmlextra"]'
+         reporter: '[ { "htmlextra" : { "export" : "test_results/test_report2.xml" }} ]'
       
       # Upload the contents of test results directory to workspace
       - name: Output the run details
