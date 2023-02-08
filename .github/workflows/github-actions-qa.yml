@@ -1,0 +1,48 @@
+name: Run Tests QA Environment
+run-name: Test Execution QA
+
+on: 
+ push:
+    branches: [ qa ]
+
+
+jobs:
+  environments-setup:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+        node-version: [19.x]
+        include:
+          - site: "development"
+            datacenter: "site-dev"
+          - site: "testing"
+            datacenter: "site-qa"
+    runs-on: ${{ matrix.os }}
+    #runs-on: macos-latest #why linux and not macosx.
+    #strategy:
+      #matrix:
+        #node-version: [19.x]
+
+
+    steps:
+
+      - uses: actions/checkout@v3
+      - name: Running Tests - Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g newman #por las dudas install antes ya que es necesario para CI
+      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}"
+      - run: npm run dev
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always() #always run even if the previous step fails
+        with:
+          report_paths: 'newman/*.xml'
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: "test-results/junit/**/*.xml"
+          
