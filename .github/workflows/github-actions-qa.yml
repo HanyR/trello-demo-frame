@@ -34,7 +34,7 @@ jobs:
       - run: | #por las dudas install antes ya que es necesario para CI
           npm install -g newman
           npm install -g newman-reporter-htmlextra  
-      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export "test_results/test_report.html"
+      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
 
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
@@ -43,7 +43,7 @@ jobs:
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
          reporters: '["junit"]'
-         reporter: '{ junit : { export : "./xmlResults.xml" } }'
+         reporter: '[{ junit : { export : "./xmlResults.xml" } }]'
       - name: Output the run details
         uses: actions/upload-artifact@v3
         with:
