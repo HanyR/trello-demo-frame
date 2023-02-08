@@ -15,36 +15,52 @@ jobs:
         include:
           - site: "development"
             datacenter: "site-dev"
-          - site: "testing"
-            datacenter: "site-qa"
     runs-on: ${{ matrix.os }}
-    #runs-on: macos-latest #why linux and not macosx.
-    #strategy:
-      #matrix:
-        #node-version: [19.x]
-
-
+    
     steps:
 
       - uses: actions/checkout@v3
-      - name: Running Tests - Use Node.js ${{ matrix.node-version }}
+
+      # Install node on the runner
+      - name: Install Node - Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install -g newman #por las dudas install antes ya que es necesario para CI
-      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_DEV}}"
-      - run: npm run dev
+      # Install the newman command-line utility, also install the html extra reporter
+      - name: Install newman
+        run: | #por las dudas install antes ya que es necesario para CI
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra 
+
+      # Make directory to upload the test results
+      - name: Make directory for uploading the test results
+        run: mkdir -p test_results
+
+      # Run the postman collection
+      - name: Run API Tests
+        run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
+
+      # Upload the contents of test results directory to workspace
+      - name: Output the run details
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-run-reports
+          path: test_results
+
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+         apiKey: ${{secrets.POSTMAN_APIKEY}}
+         collection: ${{secrets.RUN_COLLECTION}}
+         environment: ${{secrets.RUN_ENVIRONMENT_QA}}
+         reporters: '["junit"]'
+         reporter: '[ { "junit" : { "export" : "test_results/test_report2.xml" }} ]'
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
         if: always() #always run even if the previous step fails
         with:
-          report_paths: 'newman/*.xml'
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1.6.0
-        if: always()    # run this step even if previous step failed
-        with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: newman/jest-*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
+          report_paths: 'test_results/test_report2.xml'
+          detailed_summary: 'true'
+          include_passed: 'true'
           
