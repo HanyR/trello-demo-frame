@@ -43,10 +43,16 @@ jobs:
         run: mkdir -p test_results
 
       # Run the postman collection
-      - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
-        name: Run Tests
+      - name: Run API Tests
+        run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
 
-      
+           # Upload the contents of test results directory to workspace
+      - name: Output the run details
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-run-reports
+          path: test_results
+
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
         with:
@@ -55,16 +61,9 @@ jobs:
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
          reporters: '["junit"]'
          reporter: '[ { "junit" : { "export" : "test_results/test_report2.xml" }} ]'
-      
-      # Upload the contents of test results directory to workspace
-      - name: Output the run details
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-run-reports
-          path: test_results
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
         if: always() #always run even if the previous step fails
         with:
-          report_paths: 'test_results/*.xml'
+          report_paths: 'test_results/test_report2.xml'
