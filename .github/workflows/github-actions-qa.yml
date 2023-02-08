@@ -41,4 +41,4 @@ jobs:
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
          reporters: '["junit"]'
-         reporter: '["newman/test.xml"]'
+         reporter: '[export : "./xmlResults.xml"]'
