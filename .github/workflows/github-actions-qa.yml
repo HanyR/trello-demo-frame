@@ -10,7 +10,7 @@ jobs:
   environment-setup:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [windows-latest, macos-latest]
         node-version: [16.x]
         include:
 
@@ -67,3 +67,6 @@ jobs:
         if: always() #always run even if the previous step fails
         with:
           report_paths: 'test_results/test_report2.xml'
+          job_summary: 'true'
+          detailed_summary: 'true'
+          include_passed: 'true'
