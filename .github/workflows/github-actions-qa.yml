@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        node-version: [19.x]
+        node-version: [19.x,14.x]
         include:
 
           - site: "testing"
