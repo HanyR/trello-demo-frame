@@ -10,7 +10,7 @@ jobs:
   environment-setup:
     strategy:
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest]
         node-version: [19.x]
         include:
 
