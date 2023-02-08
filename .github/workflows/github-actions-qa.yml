@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        node-version: [19.x,14.x]
+        node-version: [19.x]
         include:
 
           - site: "testing"
@@ -26,29 +26,38 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-      - name: Run Node - Use Node.js ${{ matrix.node-version }}
+
+      # Install node on the runner
+      - name: Install Node - Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
-        
         with:
           node-version: ${{ matrix.node-version }}
-      - run: | #por las dudas install antes ya que es necesario para CI
+      # Install the newman command-line utility, also install the html extra reporter
+      - name: Install newman
+        run: | #por las dudas install antes ya que es necesario para CI
           npm install -g newman
-          npm install -g newman-reporter-htmlextra  
+          npm install -g newman-reporter-htmlextra 
+
+      # Make directory to upload the test results
       - name: Make directory for uploading the test results
         run: mkdir -p test_results
 
-
+      # Run the postman collection
       - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
         name: Run Tests
 
+      
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
+        name: Run Tests2
         with:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
          reporters: '["junit"]'
-         reporter: '[ junit : { export : "./xmlResults.xml" } ]'
+         reporter: '[ { "junit" : { "export" : "./xmlResults.xml" }} ]'
+      
+      # Upload the contents of test results directory to workspace
       - name: Output the run details
         uses: actions/upload-artifact@v3
         with:
