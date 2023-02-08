@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  environments-setup:
+  environment-setup:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
@@ -26,18 +26,18 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-      - name: Running Tests - Use Node.js ${{ matrix.node-version }}
+      - name: Run Node - Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g newman #por las dudas install antes ya que es necesario para CI
       - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" --reporter-junit-export "newman/test.xml"
-        name: Running Tests#2
+
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
         with:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
-          
+         reporters: '["emojitrain"]'
