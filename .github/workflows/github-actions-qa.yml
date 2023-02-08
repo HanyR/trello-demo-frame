@@ -33,15 +33,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g newman #por las dudas install antes ya que es necesario para CI
       - run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" --reporter-junit-export "newman/test.xml"
-
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always() #always run even if the previous step fails
+        name: Running Tests#2
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
         with:
-          report_paths: 'newman/*.xml'
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/composite@v2
-        if: always()
-        with:
-          junit_files: "newman/*.xml"
+         apiKey: ${{secrets.POSTMAN_APIKEY}}
+         collection: ${{secrets.RUN_COLLECTION}}
+         environment: ${{secrets.RUN_ENVIRONMENT_QA}}
           
