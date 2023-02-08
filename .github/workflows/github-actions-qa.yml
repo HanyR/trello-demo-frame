@@ -40,5 +40,5 @@ jobs:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
-         reporters: 'junit'
-         reporter: "newman/test.xml"
+         reporters: '["junit"]'
+         reporter: '["newman/test.xml"]'
