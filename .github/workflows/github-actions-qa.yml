@@ -45,7 +45,7 @@ jobs:
       - name: Output the run details
         uses: actions/upload-artifact@v3
         with:
-          name: test-run-reports
+          name: test-run-reports-HTMLEXTRA
           path: test_results
 
       - uses: actions/checkout@master
@@ -56,6 +56,12 @@ jobs:
          environment: ${{secrets.RUN_ENVIRONMENT_QA}}
          reporters: '["junit"]'
          reporter: '[ { "junit" : { "export" : "test_results/test_report2.xml" }} ]'
+
+      - name: Output the run details .xml
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-run-reports-XML
+          path: test_results
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
