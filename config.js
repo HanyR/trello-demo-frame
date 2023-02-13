@@ -22,7 +22,7 @@ function runNewman (environment_op,string_op) {
     newman.run({
         collection: process.env.RUN_COLLECTION,
         environment:   environment_op,
-        reporters: ["cli","junit"]
+        reporters: ["cli","htmlextra","junit"]
         
     }).on('start', function (err, args) { // on start of run, log to console
         console.log('running tests on... '+string_op);
