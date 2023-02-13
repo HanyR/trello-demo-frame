@@ -17,11 +17,6 @@ jobs:
           - site: "testing"
             datacenter: "site-qa"
     runs-on: ${{ matrix.os }}
-    #runs-on: macos-latest #why linux and not macosx.
-    #strategy:
-      #matrix:
-        #node-version: [19.x]
-
 
     steps:
 

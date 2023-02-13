@@ -4,33 +4,23 @@
 Trello Testing Project: this is a summary to setup the environment for API Testing with Trello as a demo example.
 
 
-## Pre-Req.
-
-This project use newman. If you don't have newman installed, run next command:
-
-```bash
-  npm i newman
-```
-
 ## Dependencies
 
-This project use next libraries: .dotenv , .dotenv-expand, .yargs
+This project use next libraries: 
+- .dotenv
 - .dotenv-expand 
 - .yargs
 
--  install dependencies:
+## Install dependencies:
 ```bash
   npm i
 ```
-
-
-## Environment Variables
+## Local Setup:
+### Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`POSTMAN_API_KEY`  
-
-Inside .env file you need to complete the _UID variable values , please check the Postman CollectionID and Postman EnvironmentID and add the value inside next variables:
+`POSTMAN_API_KEY`
 
 `NEWMAN_QA_ENV_UID`
 
@@ -39,21 +29,32 @@ Inside .env file you need to complete the _UID variable values , please check th
 `NEWMAN_DEV_ENV_UID`
 
 
+## Github Setup:
+### Environment Variables
+
+To run this project in Github repo, you will need to add the following environment variables in 'Settings/Secret and variables' section 
+
+`POSTMAN_API_KEY`
+
+`NEWMAN_QA_ENV_UID`
+
+`NEWMAN_DEV_ENV_UID`
+
+`NEWMAN_DEV_ENV_UID`
+
 ## Running Tests
 
-Github actions are setting up to execute your tests on push to qa/dev branches. But also you can check for test-results in terminal:
+Run your local tests with the next commands:
 
-For run tests in  qa-environment:
+Running tests in  qa-environment:
 ```bash
   npm run qa
 ```
 
-For run tests in  dev-environment:
+Running tests in  dev-environment:
 ```bash
   npm run dev
 ```
-
-
 
 ## Reports
 
