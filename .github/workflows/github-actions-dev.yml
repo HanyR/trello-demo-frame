@@ -7,16 +7,17 @@ on:
 
 
 jobs:
-  environments-setup:
+  environment-setup:
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
-        node-version: [19.x]
+        node-version: [16.x]
         include:
-          - site: "development"
-            datacenter: "site-dev"
+
+          - site: "testing"
+            datacenter: "site-qa"
     runs-on: ${{ matrix.os }}
-    
+
     steps:
 
       - uses: actions/checkout@v3
@@ -38,17 +39,19 @@ jobs:
 
       # Run the postman collection
       - name: Run API Tests
-        run: newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
-
-      # Upload the contents of test results directory to workspace
-      - name: Output the run details
+        run: newman run "https://api.getpostman.com/collections/${{secrets.RUN_COLLECTION}}?apikey=${{secrets.POSTMAN_APIKEY}}" --environment "https://api.getpostman.com/environments/${{secrets.RUN_ENVIRONMENT_DEV}}?apikey=${{secrets.POSTMAN_APIKEY}}" --reporters htmlextra --reporter-htmlextra-export "test_results/test_report.html"
+        #newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
+           # Upload the contents of test results directory to workspace
+      - name: Output the run details HTML
         uses: actions/upload-artifact@v3
+        if: always() 
         with:
-          name: test-run-reports
+          name: test-run-reports-HTMLEXTRA
           path: test_results
 
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
+        if: always() 
         with:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
@@ -61,6 +64,5 @@ jobs:
         if: always() #always run even if the previous step fails
         with:
           report_paths: 'test_results/test_report2.xml'
-          detailed_summary: 'true'
-          include_passed: 'true'
-          
+          detailed_summary: true
+          include_passed: true
