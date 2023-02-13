@@ -39,7 +39,7 @@ jobs:
 
       # Run the postman collection
       - name: Run API Tests
-        run: newman run "https://api.getpostman.com/collections/${{secrets.RUN_COLLECTION}}?apikey=${{secrets.POSTMAN_APIKEY}}" --environment "https://api.getpostman.com/environments/${{secrets.RUN_ENVIRONMENT_QA}}?apikey=${{secrets.POSTMAN_APIKEY}}"
+        run: newman run "https://api.getpostman.com/collections/${{secrets.RUN_COLLECTION}}?apikey=${{secrets.POSTMAN_APIKEY}}" --environment "https://api.getpostman.com/environments/${{secrets.RUN_ENVIRONMENT_QA}}?apikey=${{secrets.POSTMAN_APIKEY}} -r htmlextra --reporter-htmlextra-export test_results/test_report.html"
         #newman run "${{secrets.RUN_COLLECTION}}" --environment "${{secrets.RUN_ENVIRONMENT_QA}}" -r htmlextra --reporter-htmlextra-export test_results/test_report.html
            # Upload the contents of test results directory to workspace
       - name: Output the run details HTML
