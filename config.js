@@ -20,11 +20,10 @@ argv.env==='qa' ? runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment") : r
 function runNewman (environment_op,string_op) {
     // call newman.run to pass `options` object and wait for callback
     newman.run({
-
-        collection:  process.env.RUN_COLLECTION,
+        collection: process.env.RUN_COLLECTION,
         environment:   environment_op,
         reporters: ["cli","junit"]
-    
+        
     }).on('start', function (err, args) { // on start of run, log to console
         console.log('running tests on... '+string_op);
       }).on('done', function (err, summary) {
@@ -35,5 +34,4 @@ function runNewman (environment_op,string_op) {
             console.log('collection run completed on.. ' +string_op);
         }
     });
-
 }
