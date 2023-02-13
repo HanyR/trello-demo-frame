@@ -44,12 +44,14 @@ jobs:
            # Upload the contents of test results directory to workspace
       - name: Output the run details HTML
         uses: actions/upload-artifact@v3
+        if: always() 
         with:
           name: test-run-reports-HTMLEXTRA
           path: test_results
 
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
+        if: always() 
         with:
          apiKey: ${{secrets.POSTMAN_APIKEY}}
          collection: ${{secrets.RUN_COLLECTION}}
@@ -59,6 +61,7 @@ jobs:
 
       - name: Output the run details .xml
         uses: actions/upload-artifact@v3
+        if: always() 
         with:
           name: test-run-reports-XML
           path: test_results
