@@ -19,6 +19,7 @@ argv.env==='qa' ? runNewman(process.env.RUN_ENVIRONMENT_QA,"QA Environment") : r
 
 function runNewman (environment_op,string_op) {
     // call newman.run to pass `options` object and wait for callback
+    //demo
     newman.run({
         collection: process.env.RUN_COLLECTION,
         environment:   environment_op,
