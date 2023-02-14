@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf ./newman",
     "qa": "node ./config.js --env=QA",
-    "dev":"node ./config.js"
+    "dev": "node ./config.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,7 @@
     "dotenv": "^16.0.3",
     "dotenv-expand": "^10.0.0",
     "newman": "^5.3.2",
+    "newman-reporter-htmlextra": "^1.22.11",
     "yargs": "^17.1.1-candidate.0"
   }
 }
