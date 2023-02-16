@@ -8,12 +8,14 @@ on:
 
 jobs:
   environment-setup:
+    permissions: write-all
+    name: print-token
+    environment: qa
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
         node-version: [16.x]
         include:
-
           - site: "testing"
             datacenter: "site-qa"
     runs-on: ${{ matrix.os }}
