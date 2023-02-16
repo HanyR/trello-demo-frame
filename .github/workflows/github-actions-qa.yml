@@ -9,7 +9,7 @@ on:
 jobs:
   environment-setup:
     permissions: write-all
-    name: print-token
+    name: Running_AP-Testing
     environment: qa
     strategy:
       matrix:
