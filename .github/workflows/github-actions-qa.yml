@@ -8,12 +8,14 @@ on:
 
 jobs:
   environment-setup:
+    permissions: write-all
+    name: Running_AP-Testing
+    environment: qa
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
         node-version: [16.x]
         include:
-
           - site: "testing"
             datacenter: "site-qa"
     runs-on: ${{ matrix.os }}
