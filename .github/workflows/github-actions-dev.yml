@@ -8,6 +8,9 @@ on:
 
 jobs:
   environment-setup:
+    permissions: write-all
+    name: Running_AP-Testing
+    environment: dev
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
