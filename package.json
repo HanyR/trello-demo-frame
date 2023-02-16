@@ -5,7 +5,7 @@
   "main": "config.js",
   "scripts": {
     "clean": "rimraf ./newman",
-    "qa": "node ./config.js --env=QA",
+    "qa": "node ./config.js --env=qa",
     "dev": "node ./config.js"
   },
   "repository": {
