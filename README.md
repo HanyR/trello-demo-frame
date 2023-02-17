@@ -63,6 +63,8 @@ To check for test results, you can go to Actions tab inside github and check on 
 Example Report:
 ![Example](https://github.blog/wp-content/uploads/2022/05/image-3.png)
 
+![Example2](https://miro.medium.com/max/1400/0*vKI0jXmXheDXW6GA)
+
 ## Authors
 
 - [@HanyR](https://github.com/HanyR)
