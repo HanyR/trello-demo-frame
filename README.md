@@ -60,9 +60,11 @@ Running tests in  dev-environment:
 
 To check for test results, you can go to Actions tab inside github and check on the job results.
 
-Example Report:
+
+Junit Example Report:
 ![Example](https://github.blog/wp-content/uploads/2022/05/image-3.png)
 
+Html-extra Example Report:
 ![Example2](https://miro.medium.com/max/1400/0*vKI0jXmXheDXW6GA)
 
 ## Authors
